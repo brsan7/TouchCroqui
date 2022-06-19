@@ -25,26 +25,28 @@ function setupCanvas() {
 }
 /*Ajusta a area de captura a tela*/
 
-/*Adiciona e remove a paleta*/
-// function ComponenteAsync(pesquisaID, respostaID, ACAO) {
-//     var requisicao = new XMLHttpRequest();
-//     requisicao.open("GET", pesquisaID, true);
-//     requisicao.send();
-//     requisicao.onreadystatechange = function () {
-//         if (requisicao.readyState == 4 && requisicao.status == 200) {
-//             if(ACAO == "show"){
-//                 document.getElementById(respostaID).innerHTML = requisicao.responseText;
-//                 setupEvtPaleta();
-//             }
-//             else{
-//                 document.getElementById(respostaID).innerHTML = "";
-//             }
-//         }
-//     }
-// }
-/*Adiciona e remove a paleta*/
+/*Adiciona e remove a paleta #httpRequest*/
+function HttpRequest(requisicaoURL, respostaID, ACAO) {
+    var requisicao = new XMLHttpRequest();
+    requisicao.open("GET", requisicaoURL, true);
+    requisicao.send();
+    requisicao.onreadystatechange = function () {
+        if (requisicao.readyState == 4 && requisicao.status == 200) {
+            if(ACAO == "show"){
+                document.getElementById(respostaID).innerHTML = requisicao.responseText;
+                setupEvtPaleta();
+            }
+            else{
+                document.getElementById(respostaID).innerHTML = "";
+            }
+        }
+    }
+}
+/*Adiciona e remove a paleta #httpRequest*/
 
-//function setupEvtPaleta(){
+
+//setupEvtPaleta();//#NOThttpRequest
+function setupEvtPaleta() {
     // Setup botões de cores
     var colors = document.getElementsByClassName('colors')[0];
 
@@ -58,7 +60,7 @@ function setupCanvas() {
     brushes.addEventListener('click', function(event) {
     context.lineWidth = event.target.value || 1;
     });
-//}
+}
 
 
 /*Converte eventos TouchScreen em enventos de Mouse*/
@@ -126,20 +128,23 @@ function onCanvasMouseMove(evt) {
     }
 }
 
-// Setup botão paleta
+// Setup botão paleta //#httpRequest
 var btnPaleta = document.getElementById("btnPaleta");
 var paletaObj = document.getElementById("paleta");
 btnPaleta.addEventListener('click', function(){
 
-    if(paletaObj.hidden == true){
+    if (paletaObj.innerText == "") { //#httpRequest
+        HttpRequest('assets/html/paleta.html', "paleta", "show");
         paletaObj.hidden = false;
-        //ComponenteAsync('assets/html/paleta .html', "paleta", "show");
     }
     else{
+        HttpRequest('assets/html/paleta.html', "paleta", "hide");
         paletaObj.hidden = true;
-        //ComponenteAsync('assets/html/paleta.html', "paleta", "hide");
-    }
+    } //#httpRequest
+     //if(paletaObj.hidden == true) paletaObj.hidden = false; //#NOThttpRequest
+     //else paletaObj.hidden = true; //#NOThttpRequest
 });
+paletaObj.innerText = "" //#httpRequest
 
 // Setup botão fullscreen
 var btnFullScreen = document.getElementById("btnFullScreen");
